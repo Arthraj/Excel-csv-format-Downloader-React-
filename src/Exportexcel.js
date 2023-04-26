@@ -6,11 +6,13 @@ import "./App.css";
 const ExportExcel = (obj) => {
   const [data, setData] = useState(obj);
   const [checked, setChecked] = useState([]);
-  const [list,setList]=useState([]);
+  const [list, setList] = useState([]);
+  const [visible, setVisible] = useState(false);
 
   const allKeys = Object.keys(data.obj[0]);
 
   const handleChange = (key) => {
+    setVisible(false);
     const newChecked = [...checked];
     const index = newChecked.indexOf(key);
     if (index === -1) {
@@ -21,13 +23,10 @@ const ExportExcel = (obj) => {
     setChecked(newChecked);
   };
 
-  
   const sendForPrint = () => {
     const finalObj = [];
-    let i = 0;
     data.obj.forEach((user) => {
       const tempObj = {};
-
       for (let key in user) {
         if (checked.includes(key)) {
           tempObj[key] = user[key];
@@ -35,8 +34,8 @@ const ExportExcel = (obj) => {
       }
       finalObj.push(tempObj);
     });
-    // console.log(finalObj);
     setList(finalObj);
+    setVisible(true);
     // console.log(list);
   };
 
@@ -65,7 +64,12 @@ const ExportExcel = (obj) => {
       })}
 
       <button onClick={() => sendForPrint()}>Selected Print</button>
-      <CSVLink data={list} className="btn btn-success">Download csv</CSVLink>
+        {visible ? 
+            <CSVLink data={list} className="btn btn-success">
+              Download csv
+            </CSVLink>:
+          (<p>Please select the columns to print in excel</p>)
+        }
     </>
   );
 };
