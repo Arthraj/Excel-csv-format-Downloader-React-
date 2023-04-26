@@ -95,9 +95,6 @@ function App() {
   
   return (
     <div className="App">
-      {/* <Columns rawData={rawData}/> */}
-      <p>upar</p>
-      
       <ExportExcel obj={rawData}/>
     </div>
   );
